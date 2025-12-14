@@ -10,3 +10,4 @@ Build and UP app
 
 - `docker-compose build`   # собрать образ
 - `docker-compose up -d`   # запустить в фоне
+- `docker-compose up --build --force-recreate -d` # обновление проекта без остановки

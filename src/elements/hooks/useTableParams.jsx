@@ -153,11 +153,11 @@ const createBaseTableConfig = (data, tableState = {}, handleTableChange, rowKey)
 // ==============================
 
 export const useTableParams = (posts = [], isLoading = false, tableState = {}, handleTableChange, rowKey) => {
-  const { columns, dataSource } = useTableConfig(posts);
+  const { columns, dataSource } = useTableConfig(posts, tableState.filters, tableState.sorter);
   
   const tableParams = useMemo(() => {
     const baseConfig = createBaseTableConfig(
-      dataSource, // ПЕРЕДАЕМ dataSource вместо posts!
+      dataSource, // ПЕРЕДАЕМ ОТФИЛЬТРОВАННЫЕ ДАННЫЕ
       tableState, 
       handleTableChange, 
       rowKey
@@ -172,21 +172,16 @@ export const useTableParams = (posts = [], isLoading = false, tableState = {}, h
         ...baseConfig.locale,
         emptyText: isLoading ? 'Загрузка...' : LOCALE_CONFIG.emptyText
       },
-      // Добавляем текущее состояние фильтрации
-      ...(tableState.filters && Object.keys(tableState.filters).length > 0 && { 
-        filters: tableState.filters 
-      }),
-      // Добавляем текущее состояние сортировки
-      ...(tableState.sorter && tableState.sorter.field && {
-        sortOrder: tableState.sorter.order,
-        defaultSortOrder: tableState.sorter.order
-      })
+      // Сохраняем текущие фильтры в состоянии таблицы
+      filteredValue: tableState.filters,
+      // Сохраняем текущую сортировку
+      sortOrder: tableState.sorter?.order,
+      sortField: tableState.sorter?.field
     };
   }, [columns, dataSource, isLoading, tableState, handleTableChange, rowKey]);
 
   return tableParams;
 };
-
 // ==============================
 // ДОПОЛНИТЕЛЬНЫЕ УТИЛИТЫ
 // ==============================

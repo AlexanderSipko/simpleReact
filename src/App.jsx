@@ -12,6 +12,8 @@ const App = () => {
               Hello Ant Design Button
             </Button>
 
+            <p className='text-center font-bold text-green-600'>Version + 1</p>
+
             <TableData
               posts={posts}
               load={load}
