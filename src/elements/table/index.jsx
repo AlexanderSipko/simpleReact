@@ -1,11 +1,28 @@
-import { Table } from "antd"
+//my-react-app/src/elements/table/index.jsx
 
-function TableData () {
+import { Table } from "antd";
+import { useTableState, useTableParams } from "../hooks/useTableParams";
 
 
-    return <Table>
+function TableData({ posts, load, error }) {
+  const { tableState, handleTableChange } = useTableState(10);
+  const tableParams = useTableParams(posts, load, tableState, handleTableChange, 'id');
 
-    </Table>
+  
+
+  if (error) {
+    return (
+      <div style={{ 
+        padding: '20px', 
+        textAlign: 'center', 
+        color: 'red' 
+      }}>
+        Ошибка: {error.message || error}
+      </div>
+    );
+  }
+
+  return <Table {...tableParams} />;
 }
 
-export { TableData }
+export { TableData };
